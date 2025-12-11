@@ -1,0 +1,143 @@
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --accent-color: #0dcaf0;
+    --dark-bg: #1e2125;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Navbar Tweaks */
+.navbar {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.nav-link {
+    font-weight: 500;
+    margin-right: 15px;
+    transition: color 0.3s;
+}
+.nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%);
+    min-height: 85vh;
+    padding-top: 60px; /* Offset for fixed navbar */
+    position: relative;
+}
+
+.hero-bg-shape {
+    position: absolute;
+    bottom: -50px;
+    right: -100px;
+    width: 600px;
+    height: 600px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    filter: blur(80px);
+}
+
+/* Glass Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(10px); /* Added for Safari support */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.floating-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 250px;
+}
+
+/* Feature Cards */
+.feature-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: white;
+}
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
+}
+.icon-box {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Team Cards */
+.team-card {
+    transition: all 0.3s;
+}
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+/* Upload Area */
+.upload-area {
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+}
+.upload-area:hover, .upload-area.bg-white {
+    border-color: var(--primary-color) !important;
+    background-color: #fff !important;
+}
+
+/* Disclaimer Box */
+.disclaimer-box {
+    background-color: #fff3cd;
+    border-left: 5px solid #ffc107;
+    color: #856404;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: start;
+}
+
+/* Animations */
+.animate-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+.animate-in-right {
+    animation: fadeInRight 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateX(30px);
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInRight {
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+.animate-pulse {
+    animation: pulse 1.5s infinite;
+}
