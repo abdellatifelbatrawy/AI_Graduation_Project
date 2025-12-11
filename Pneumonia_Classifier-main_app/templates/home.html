@@ -1,0 +1,120 @@
+{% extends "layout.html" %} {% block content %}
+<!-- Hero Section -->
+<section
+  class="hero-section d-flex align-items-center position-relative overflow-hidden"
+>
+  <div class="container position-relative z-2">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <span
+          class="badge bg-light text-primary px-3 py-2 rounded-pill mb-3 fw-bold shadow-sm"
+        >
+          <i class="fas fa-robot me-2"></i>AI-Powered Healthcare
+        </span>
+        <h1 class="display-3 fw-bold text-white mb-4 animate-up">
+          Detect Pneumonia within Seconds.
+        </h1>
+        <p class="lead text-white-50 mb-5 animate-up delay-1">
+          Our advanced Deep Learning model analyzes chest X-rays with high
+          accuracy to assist medical professionals in early diagnosis.
+        </p>
+        <div class="d-flex gap-3 animate-up delay-2">
+          <a
+            href="{{ url_for('detector') }}"
+            class="btn btn-light btn-lg rounded-pill px-5 fw-bold shadow"
+          >
+            Start Diagnosis <i class="fas fa-arrow-right ms-2"></i>
+          </a>
+          <a
+            href="{{ url_for('about') }}"
+            class="btn btn-outline-light btn-lg rounded-pill px-5"
+          >
+            Learn More
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center animate-in-right">
+        <!-- Abstract UI Representation -->
+        <div class="hero-image-container">
+          <i class="fa-solid fa-user-doctor fa-10x text-white opacity-25"></i>
+          <div class="floating-card glass-card p-3 rounded-3 shadow text-start">
+            <div class="d-flex align-items-center mb-2">
+              <div
+                class="spinner-border text-success spinner-border-sm me-2"
+                role="status"
+              ></div>
+              <small class="fw-bold text-white">Analysis Complete</small>
+            </div>
+            <div class="progress" style="height: 6px; width: 150px">
+              <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                style="width: 96%"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Background Decor -->
+  <div class="hero-bg-shape"></div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+  <div class="container py-5">
+    <div class="row text-center mb-5">
+      <div class="col-lg-8 mx-auto">
+        <h2 class="fw-bold text-dark">Why Choose Pneumo Scan?</h2>
+        <p class="text-muted">
+          Designed to support doctors with rapid second opinions.
+        </p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm feature-card p-4 text-center">
+          <div
+            class="icon-box bg-primary bg-opacity-10 text-primary mx-auto rounded-circle mb-3"
+          >
+            <i class="fas fa-bolt fa-2x"></i>
+          </div>
+          <h5 class="fw-bold">Fast Results</h5>
+          <p class="text-muted">
+            Get analysis results in under 2 seconds upon uploading an X-Ray
+            image.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm feature-card p-4 text-center">
+          <div
+            class="icon-box bg-success bg-opacity-10 text-success mx-auto rounded-circle mb-3"
+          >
+            <i class="fas fa-check-double fa-2x"></i>
+          </div>
+          <h5 class="fw-bold">High Accuracy</h5>
+          <p class="text-muted">
+            Trained on thousands of validated medical datasets to ensure
+            reliability.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm feature-card p-4 text-center">
+          <div
+            class="icon-box bg-info bg-opacity-10 text-info mx-auto rounded-circle mb-3"
+          >
+            <i class="fas fa-shield-alt fa-2x"></i>
+          </div>
+          <h5 class="fw-bold">Secure & Private</h5>
+          <p class="text-muted">
+            Images are processed securely and deleted shortly after analysis.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

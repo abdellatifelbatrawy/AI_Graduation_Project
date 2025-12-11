@@ -1,0 +1,195 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <!-- Title -->
+      <div class="text-center mb-5">
+        <h2 class="fw-bold">Upload X-Ray Image</h2>
+        <p class="text-muted">Supported formats: JPG, JPEG, PNG</p>
+      </div>
+
+      <!-- Upload Card -->
+      <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-4 p-md-5">
+          <form
+            action="/detector"
+            method="POST"
+            enctype="multipart/form-data"
+            id="upload-form"
+          >
+            <!-- Drag and Drop Area -->
+            <div
+              class="upload-area p-5 text-center border border-2 border-dashed rounded-3 bg-light position-relative"
+              id="drop-zone"
+            >
+              <input
+                type="file"
+                name="image"
+                id="file-input"
+                class="position-absolute top-0 start-0 w-100 h-100 opacity-0"
+                style="cursor: pointer"
+                accept="image/*"
+                required
+              />
+
+              <div id="upload-content">
+                <i
+                  class="fa-solid fa-cloud-arrow-up fa-3x text-primary mb-3"
+                ></i>
+                <h5 class="fw-bold">Drag & Drop or Click</h5>
+                <p class="text-muted small mb-0">to upload your X-Ray scan</p>
+              </div>
+
+              <!-- Preview Container -->
+              <div id="preview-container" class="d-none mt-3">
+                <p id="filename-display" class="fw-bold text-dark mb-2"></p>
+                <img
+                  id="img-preview"
+                  src="#"
+                  alt="Preview"
+                  class="img-fluid rounded shadow-sm"
+                  style="max-height: 200px"
+                />
+                <p class="text-muted small mt-2">Click to change file</p>
+              </div>
+            </div>
+
+            <!-- Analyze Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-100 py-3 mt-4 fw-bold shadow-sm rounded-pill"
+              id="predict-btn"
+            >
+              <i class="fa-solid fa-microscope me-2"></i> Analyze Scan
+            </button>
+          </form>
+
+          <!-- Disclaimer -->
+          <div class="disclaimer-box">
+            <i class="fa-solid fa-triangle-exclamation fa-lg me-3 mt-1"></i>
+            <div>
+              <strong>Important Disclaimer:</strong><br />
+              This tool uses an AI model for preliminary analysis and is
+              <strong>not</strong> a substitute for professional medical advice.
+              Please consult a certified doctor for an accurate diagnosis.
+            </div>
+          </div>
+
+          <!-- Loading State -->
+          <div id="loading" class="text-center mt-4 d-none">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted fw-bold animate-pulse">
+              Running Model...
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      {% if prediction %}
+      <div class="card shadow border-0 rounded-4 mt-5 animate-up">
+        <div class="card-header bg-white border-0 py-3">
+          <h5 class="fw-bold mb-0 text-center">Analysis Report</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="row align-items-center">
+            <div class="col-md-5 mb-3 mb-md-0 text-center">
+              <img
+                src="{{ image_path }}"
+                class="img-fluid rounded-3 border shadow-sm"
+                alt="Analyzed X-Ray"
+              />
+            </div>
+            <div class="col-md-7">
+              <h6 class="text-muted text-uppercase fw-bold small">
+                Prediction
+              </h6>
+
+              {% if prediction == 'Pneumonia Detected' %}
+              <h2 class="text-danger fw-bold mb-3">
+                <i class="fa-solid fa-circle-exclamation me-2"></i>Positive
+              </h2>
+              {% else %}
+              <h2 class="text-success fw-bold mb-3">
+                <i class="fa-solid fa-circle-check me-2"></i>Negative
+              </h2>
+              {% endif %}
+
+              <h6 class="text-muted text-uppercase fw-bold small">
+                Model Confidence
+              </h6>
+              <div
+                class="progress"
+                style="height: 20px; background-color: #e9ecef"
+              >
+                <div
+                  class="progress-bar progress-bar-striped progress-bar-animated {% if prediction == 'Pneumonia Detected' %}bg-danger{% else %}bg-success{% endif %}"
+                  role="progressbar"
+                  style="width: {{ confidence * 100 }}%;"
+                >
+                  {{ (confidence * 100) | round(2) }}%
+                </div>
+              </div>
+              <p class="text-muted small mt-2">
+                The model is {{ (confidence * 100) | round(2) }}% sure this is
+                {{ prediction }}.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  const fileInput = document.getElementById("file-input");
+  const dropZone = document.getElementById("drop-zone");
+  const uploadContent = document.getElementById("upload-content");
+  const previewContainer = document.getElementById("preview-container");
+  const imgPreview = document.getElementById("img-preview");
+  const filenameDisplay = document.getElementById("filename-display");
+  const form = document.getElementById("upload-form");
+  const loading = document.getElementById("loading");
+  const predictBtn = document.getElementById("predict-btn");
+
+  // Handle Drag Over
+  dropZone.addEventListener("dragover", (e) => {
+    dropZone.classList.add("bg-white", "border-primary");
+  });
+
+  // Handle Drag Leave
+  dropZone.addEventListener("dragleave", (e) => {
+    dropZone.classList.remove("bg-white", "border-primary");
+  });
+
+  // Handle File Selection
+  fileInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+      // Show Preview
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        imgPreview.src = e.target.result;
+        uploadContent.classList.add("d-none");
+        previewContainer.classList.remove("d-none");
+        filenameDisplay.textContent = file.name;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Handle Form Submit
+  form.addEventListener("submit", () => {
+    if (fileInput.files.length > 0) {
+      predictBtn.classList.add("disabled");
+      predictBtn.innerHTML =
+        '<i class="fas fa-cog fa-spin me-2"></i> Processing...';
+      loading.classList.remove("d-none");
+    }
+  });
+</script>
+{% endblock %}
